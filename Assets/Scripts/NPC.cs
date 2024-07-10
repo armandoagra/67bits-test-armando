@@ -15,9 +15,14 @@ public class NPC : MonoBehaviour
     [SerializeField] private Rigidbody hipsRigidbody;
     [SerializeField] private Vector3 playerOffset;
     [SerializeField] private Vector3 objectOffset;
+    [SerializeField] private float slowDownSeconds = 0.1f;
+    [SerializeField] private float slowDownAmount = 0.1f;
+    [SerializeField] private bool isPunched;
+    [SerializeField] private GameObject punchVFX;
+    [SerializeField] private AudioClip punchSFX;
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -59,23 +64,27 @@ public class NPC : MonoBehaviour
 
     private IEnumerator EnableIsCarriable()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         isCarriable = true;
     }
 
-
-    private void OnTriggerEnter(Collider other)
+    private IEnumerator PunchSequence()
     {
-        if (other.CompareTag("Player"))
-        {
-            
-        }
-        
+        Time.timeScale = slowDownAmount;
+        Instantiate(punchVFX, transform);
+        AudioSource.PlayClipAtPoint(punchSFX, transform.position);
+        yield return new WaitForSecondsRealtime(slowDownSeconds);
+        Time.timeScale = 1f;
     }
 
     public void HipsTrigger(PlayerCarry playerCarry)
     {
-        ToggleRagdoll(false);
+        if (!isPunched)
+        {
+            StartCoroutine(PunchSequence());
+            ToggleRagdoll(false);
+            isPunched = true;
+        }
 
         if (isCarriable)
         {
