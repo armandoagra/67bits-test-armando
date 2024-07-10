@@ -5,16 +5,18 @@ using UnityEngine;
 public class PlayerCarry : MonoBehaviour
 {
     [SerializeField] private List<NPC> carriables = new();
-
+    [SerializeField] private Animator animator;
 
     public void AddCarriable(NPC c)
     {
+        animator.SetBool("IsCarrying", true);
         carriables.Add(c);
     }
 
     public void SellCarriables()
     {
         // Co-rotina de venda
+        if (carriables.Count == 0) animator.SetBool("IsCarrying", false);
     }
 
     public Transform GetTopCarriableTransform()

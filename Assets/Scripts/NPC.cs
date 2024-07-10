@@ -10,6 +10,7 @@ public class NPC : MonoBehaviour
     private float movementSpeed = 5f;
     private bool isFirst = false;
     [SerializeField] private Rigidbody[] rigidbodies;
+    [SerializeField] private Collider[] ragdollColliders;
     [SerializeField] private Collider regularCollider;
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody hipsRigidbody;
@@ -25,6 +26,7 @@ public class NPC : MonoBehaviour
     private void Awake()
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
+        
         animator = GetComponent<Animator>();
         ToggleRagdoll(true);
     }
@@ -56,6 +58,7 @@ public class NPC : MonoBehaviour
         {
             r.isKinematic = isRegular;
         }
+
         if (!isRegular)
         {
             StartCoroutine(EnableIsCarriable());
@@ -81,13 +84,18 @@ public class NPC : MonoBehaviour
     {
         if (!isPunched)
         {
+            playerCarry.GetComponent<PlayerActions>().Punch(); // improve this
             StartCoroutine(PunchSequence());
             ToggleRagdoll(false);
             isPunched = true;
         }
 
-        if (isCarriable)
+        if (isCarriable && !gettingCarried)
         {
+            foreach (Collider c in ragdollColliders)
+            {
+                c.enabled = false;
+            }
             parent = playerCarry.GetTopCarriableTransform();
             playerCarry.AddCarriable(this);
             isFirst = playerCarry.GetCarriablesCount() == 1;
