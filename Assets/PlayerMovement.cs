@@ -8,24 +8,33 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
     private Vector2 startInputPosition;
     private bool isMoving = false;
+    [SerializeField] private Animator animator;
+    private int isMovingHash;
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        isMovingHash = Animator.StringToHash("IsMoving");
     }
 
     void Update()
     {
-        if (Input.touchCount == 0) isMoving = false;
+        if (Input.touchCount == 0)
+        {
+            isMoving = false;
+            animator.SetBool(isMovingHash, false);
+        }
         if (Input.touchCount == 1 && isMoving == false)
         {
             isMoving = true;
             startInputPosition = Input.GetTouch(0).position;
+            animator.SetBool(isMovingHash, true);
         }
         if (isMoving)
         {
             Vector2 currentInputPosition = Input.GetTouch(0).position;
             Vector3 movementVector = new(currentInputPosition.x - startInputPosition.x, 0f, currentInputPosition.y - startInputPosition.y);
+            transform.forward = movementVector;
             characterController.Move(speed * Time.deltaTime * movementVector.normalized);
         }
     }
