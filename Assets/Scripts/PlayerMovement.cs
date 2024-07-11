@@ -28,13 +28,16 @@ public class PlayerMovement : MonoBehaviour
         {
             isMoving = true;
             startInputPosition = Input.GetTouch(0).position;
-            animator.SetBool(isMovingHash, true);
         }
         if (isMoving)
         {
             Vector2 currentInputPosition = Input.GetTouch(0).position;
             Vector3 movementVector = new(currentInputPosition.x - startInputPosition.x, 0f, currentInputPosition.y - startInputPosition.y);
-            transform.forward = movementVector;
+            if (movementVector.magnitude > 0.1f)
+            {
+                transform.forward = movementVector;
+                animator.SetBool(isMovingHash, true);
+            }
             characterController.Move(speed * Time.deltaTime * movementVector.normalized);
         }
     }

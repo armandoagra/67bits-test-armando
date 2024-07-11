@@ -9,6 +9,7 @@ public class NPC : MonoBehaviour
     private Transform parent;
     private float movementSpeed = 5f;
     private bool isFirst = false;
+    [SerializeField] private int cashAmount = 50;
     [SerializeField] private Rigidbody[] rigidbodies;
     [SerializeField] private Collider[] ragdollColliders;
     [SerializeField] private Collider regularCollider;
@@ -16,8 +17,7 @@ public class NPC : MonoBehaviour
     [SerializeField] private Rigidbody hipsRigidbody;
     [SerializeField] private Vector3 playerOffset;
     [SerializeField] private Vector3 objectOffset;
-    [SerializeField] private float slowDownSeconds = 0.1f;
-    [SerializeField] private float slowDownAmount = 0.1f;
+    [SerializeField] private float timeBeforeSlowdown, slowDownSeconds, slowDownAmount = 0.1f;
     [SerializeField] private bool isPunched;
     [SerializeField] private GameObject punchVFX;
     [SerializeField] private AudioClip punchSFX;
@@ -73,9 +73,11 @@ public class NPC : MonoBehaviour
 
     private IEnumerator PunchSequence()
     {
-        Time.timeScale = slowDownAmount;
+        ToggleRagdoll(false);
         Instantiate(punchVFX, transform);
+        yield return new WaitForSecondsRealtime(0.2f);
         AudioSource.PlayClipAtPoint(punchSFX, transform.position);
+        Time.timeScale = slowDownAmount;
         yield return new WaitForSecondsRealtime(slowDownSeconds);
         Time.timeScale = 1f;
     }
@@ -86,7 +88,7 @@ public class NPC : MonoBehaviour
         {
             playerCarry.GetComponent<PlayerActions>().Punch(); // improve this
             StartCoroutine(PunchSequence());
-            ToggleRagdoll(false);
+            
             isPunched = true;
         }
 
@@ -105,5 +107,10 @@ public class NPC : MonoBehaviour
             gettingCarried = true;
             hipsRigidbody.isKinematic = true;
         }
+    }
+
+    public int GetCashAmount()
+    {
+        return cashAmount;
     }
 }

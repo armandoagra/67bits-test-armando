@@ -13,9 +13,12 @@ public class PlayerCarry : MonoBehaviour
         carriables.Add(c);
     }
 
-    public void SellCarriables()
+    public void SellCarriable()
     {
-        // Co-rotina de venda
+        GameManager.Instance.AddCash(carriables[carriables.Count - 1].GetCashAmount());
+        NPC npc = carriables[carriables.Count - 1];
+        carriables.Remove(npc);
+        Destroy(npc.gameObject);
         if (carriables.Count == 0) animator.SetBool("IsCarrying", false);
     }
 
