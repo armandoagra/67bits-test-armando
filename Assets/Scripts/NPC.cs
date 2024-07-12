@@ -26,7 +26,7 @@ public class NPC : MonoBehaviour
     private void Awake()
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
-        
+
         animator = GetComponent<Animator>();
         ToggleRagdoll(true);
     }
@@ -88,7 +88,7 @@ public class NPC : MonoBehaviour
         {
             playerCarry.GetComponent<PlayerActions>().Punch(); // improve this
             StartCoroutine(PunchSequence());
-            
+
             isPunched = true;
         }
 
@@ -98,14 +98,17 @@ public class NPC : MonoBehaviour
             {
                 c.enabled = false;
             }
-            parent = playerCarry.GetTopCarriableTransform();
-            playerCarry.AddCarriable(this);
-            isFirst = playerCarry.GetCarriablesCount() == 1;
-            Vector3 offset = isFirst ? playerOffset : objectOffset;
-            hipsRigidbody.transform.localPosition = Vector3.zero;
-            transform.position = parent.position + offset;
-            gettingCarried = true;
-            hipsRigidbody.isKinematic = true;
+            if (playerCarry.AddCarriable(this))
+            {
+                parent = playerCarry.GetTopCarriableTransform();
+                isFirst = playerCarry.GetCarriablesCount() == 1;
+                Vector3 offset = isFirst ? playerOffset : objectOffset;
+                hipsRigidbody.transform.localPosition = Vector3.zero;
+                transform.position = parent.position + offset;
+                gettingCarried = true;
+                hipsRigidbody.isKinematic = true;
+
+            }
         }
     }
 

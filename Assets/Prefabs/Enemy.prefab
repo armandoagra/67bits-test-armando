@@ -1661,15 +1661,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d66827654c1b45d43baf58123a8e4972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cashAmount: 50
   rigidbodies: []
+  ragdollColliders:
+  - {fileID: 6061024954770022222}
+  - {fileID: 8921152355270064499}
+  - {fileID: 1672251835374446271}
+  - {fileID: 374195444860966871}
+  - {fileID: 2835502172633273156}
+  - {fileID: 6599428271648506059}
+  - {fileID: 3968598624514928429}
+  - {fileID: 746262131876429597}
+  - {fileID: 6773291535324765128}
+  - {fileID: 4683079039969748477}
+  - {fileID: 4760293483337262359}
   regularCollider: {fileID: 0}
   animator: {fileID: 3105380883868983623}
   hipsRigidbody: {fileID: 2204397365312717345}
-  playerOffset: {x: 0, y: 2, z: 0}
-  objectOffset: {x: 0, y: 0.75, z: 0}
-  slowDownSeconds: 0.1
+  playerOffset: {x: 0, y: 2.5, z: 0}
+  objectOffset: {x: 0, y: 0.5, z: 0}
+  timeBeforeSlowdown: 0
+  slowDownSeconds: 0.2
   slowDownAmount: 0.1
   isPunched: 0
+  punchVFX: {fileID: 2066305538185048337, guid: 801e2d25ce1b2ce45a17d6bd26e3a308, type: 3}
+  punchSFX: {fileID: 8300000, guid: 335a6981b86cfd74bba5d6f1e5cb79fc, type: 3}
 --- !u!1 &6758686859888443208
 GameObject:
   m_ObjectHideFlags: 0

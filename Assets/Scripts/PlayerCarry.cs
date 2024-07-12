@@ -6,11 +6,20 @@ public class PlayerCarry : MonoBehaviour
 {
     [SerializeField] private List<NPC> carriables = new();
     [SerializeField] private Animator animator;
+    private int maxCapacity = 3;
+    private int currentLevel = 1;
+    [SerializeField] private Material[] levelMaterials;
+    [SerializeField] private Renderer renderer;
 
-    public void AddCarriable(NPC c)
+    public bool AddCarriable(NPC c)
     {
-        animator.SetBool("IsCarrying", true);
-        carriables.Add(c);
+        if (carriables.Count < maxCapacity)
+        {
+            animator.SetBool("IsCarrying", true);
+            carriables.Add(c);
+            return true;
+        }
+        return false;
     }
 
     public void SellCarriable()
@@ -24,12 +33,29 @@ public class PlayerCarry : MonoBehaviour
 
     public Transform GetTopCarriableTransform()
     {
-        if (carriables.Count == 0) return transform;
-        else return carriables[carriables.Count - 1].transform;
+        if (carriables.Count == 1) return transform;
+        else return carriables[carriables.Count - 2].transform;
     }
 
     public int GetCarriablesCount()
     {
         return carriables.Count;
+    }
+
+    public void IncreaseMaxCapacity()
+    {
+        maxCapacity++;
+        currentLevel++;
+        UpdateColor(currentLevel);
+    }
+
+    private void UpdateColor(int currentLevel)
+    {
+        renderer.material = levelMaterials[currentLevel - 1];
+    }
+
+    public int GetCurrentLevel()
+    {
+        return currentLevel;
     }
 }
