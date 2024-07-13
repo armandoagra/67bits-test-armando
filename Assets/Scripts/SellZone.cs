@@ -8,6 +8,7 @@ public class SellZone : MonoBehaviour
     private PlayerCarry playerCarry;
     private float timer;
     [SerializeField] private float timeToSell;
+    [SerializeField] private AudioClip sellSFX;
 
     // Update is called once per frame
     void Update()
@@ -18,6 +19,7 @@ public class SellZone : MonoBehaviour
         timer += Time.deltaTime;
         if (timer >= timeToSell)
         {
+            AudioSource.PlayClipAtPoint(sellSFX, transform.position, 1f);
             playerCarry.SellCarriable();
             timer = 0f;
         }

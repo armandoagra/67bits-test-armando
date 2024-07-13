@@ -75,8 +75,8 @@ public class NPC : MonoBehaviour
     {
         ToggleRagdoll(false);
         Instantiate(punchVFX, transform);
+        AudioSource.PlayClipAtPoint(punchSFX, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
-        AudioSource.PlayClipAtPoint(punchSFX, transform.position);
         Time.timeScale = slowDownAmount;
         yield return new WaitForSecondsRealtime(slowDownSeconds);
         Time.timeScale = 1f;

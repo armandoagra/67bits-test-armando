@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int currentShopPrice;
     [SerializeField] private TMPro.TextMeshProUGUI shopPriceText;
     [SerializeField] private TMPro.TextMeshProUGUI cashText;
-
+    [SerializeField] private AudioClip buySFX, noCashSFX;
     private void Awake()
     {
         Instance = this;
@@ -34,9 +34,11 @@ public class GameManager : MonoBehaviour
         if (amount > cash)
         {
             Debug.LogError("Shouldn't ever reach this line!");
+            return;
         }
         cash -= amount;
         cashText.text = cash.ToString();
+        AudioSource.PlayClipAtPoint(buySFX, playerCarry.transform.position, 1f);
     }
 
     public void OpenLevelUpPanel()
@@ -61,10 +63,11 @@ public class GameManager : MonoBehaviour
             playerCarry.IncreaseMaxCapacity();
             UseCash(currentShopPrice);
             SetShopPrice();
+
         }
         else
         {
-            Debug.Log("not enough cash");
+            AudioSource.PlayClipAtPoint(noCashSFX, playerCarry.transform.position, 1f);
         }
     }
 
