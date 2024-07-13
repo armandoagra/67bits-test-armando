@@ -18,6 +18,7 @@ public class LevelUpZone : MonoBehaviour
             if (timer > timeToOpenPanel)
             {
                 GameManager.Instance.OpenLevelUpPanel();
+                panelIsOpen = true;
             }
         }
     }

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI shopPriceText;
     [SerializeField] private TMPro.TextMeshProUGUI cashText;
     [SerializeField] private AudioClip buySFX, noCashSFX;
+    [SerializeField] private float regularTextSize, animatedTextSize;
     private void Awake()
     {
         Instance = this;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     {
         cash += amount;
         cashText.text = cash.ToString();
+        StartCoroutine(TextPulse(regularTextSize, animatedTextSize));
     }
 
     public void UseCash(int amount)
@@ -56,6 +58,11 @@ public class GameManager : MonoBehaviour
         LevelUpCapacity();
     }
 
+    public void BtnCloseLevelUpPanel()
+    {
+        CloseLevelUpPanel();
+    }
+
     private void LevelUpCapacity()
     {
         if (cash >= currentShopPrice)
@@ -76,4 +83,23 @@ public class GameManager : MonoBehaviour
         currentShopPrice = shopPrices[playerCarry.GetCurrentLevel() - 1];
         shopPriceText.text = currentShopPrice.ToString();
     }
+
+    private IEnumerator TextPulse(float originalSize, float goalSize)
+    {
+        float animationTime = 0f;
+        while (cashText.fontSize < goalSize)
+        {
+            animationTime += Time.deltaTime * 5f;
+            cashText.fontSize = Mathf.SmoothStep(originalSize, goalSize, animationTime);
+            yield return null;
+        }
+        animationTime = 0f;
+        while (cashText.fontSize > originalSize)
+        {
+            animationTime += Time.deltaTime * 5f;
+            cashText.fontSize = Mathf.SmoothStep(goalSize, originalSize, animationTime);
+            yield return null;
+        }
+    }
+
 }
