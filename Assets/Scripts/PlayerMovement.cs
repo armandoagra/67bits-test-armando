@@ -32,13 +32,18 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving)
         {
             Vector2 currentInputPosition = Input.GetTouch(0).position;
-            Vector3 movementVector = new(currentInputPosition.x - startInputPosition.x, 0f, currentInputPosition.y - startInputPosition.y);
+            Vector3 movementVector = new Vector3(currentInputPosition.x - startInputPosition.x, 0f, currentInputPosition.y - startInputPosition.y).normalized;
             if (movementVector.magnitude > 0.1f)
             {
                 transform.forward = movementVector;
                 animator.SetBool(isMovingHash, true);
             }
-            characterController.Move(speed * Time.deltaTime * movementVector.normalized);
+            movementVector.y = -1f; // stay grounded
+            characterController.Move(speed * Time.deltaTime * movementVector);
+        } else
+        {
+            Vector3 stayGroundedVector = new Vector3(0f, -1f, 0f);
+            characterController.Move(speed * Time.deltaTime * stayGroundedVector);
         }
     }
 }
