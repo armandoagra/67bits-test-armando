@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerCarry : MonoBehaviour
 {
-    [SerializeField] private List<NPC> carriables = new();
+    [SerializeField] private List<Carriable> carriables = new();
     [SerializeField] private Animator animator;
     private int maxCapacity = 3;
     private int currentLevel = 1;
     [SerializeField] private Material[] levelMaterials;
     [SerializeField] private Renderer renderer;
 
-    public bool AddCarriable(NPC c)
+    public bool AddCarriable(Carriable c)
     {
         if (carriables.Count < maxCapacity)
         {
@@ -25,9 +25,10 @@ public class PlayerCarry : MonoBehaviour
     public void SellCarriable()
     {
         GameManager.Instance.AddCash(carriables[carriables.Count - 1].GetCashAmount());
-        NPC npc = carriables[carriables.Count - 1];
-        carriables.Remove(npc);
-        Destroy(npc.gameObject);
+        Carriable carriable = carriables[carriables.Count - 1];
+        carriables.Remove(carriable);
+        carriable.GetDropped();
+        //Destroy(npc.gameObject);
         if (carriables.Count == 0) animator.SetBool("IsCarrying", false);
     }
 

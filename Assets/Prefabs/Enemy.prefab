@@ -1598,6 +1598,7 @@ GameObject:
   - component: {fileID: 3510732754771870935}
   - component: {fileID: 3105380883868983623}
   - component: {fileID: 1046824029149829843}
+  - component: {fileID: -5761435109492267913}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1661,7 +1662,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d66827654c1b45d43baf58123a8e4972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cashAmount: 50
   rigidbodies: []
   ragdollColliders:
   - {fileID: 6061024954770022222}
@@ -1686,6 +1686,21 @@ MonoBehaviour:
   isPunched: 0
   punchVFX: {fileID: 2066305538185048337, guid: 801e2d25ce1b2ce45a17d6bd26e3a308, type: 3}
   punchSFX: {fileID: 8300000, guid: 335a6981b86cfd74bba5d6f1e5cb79fc, type: 3}
+--- !u!114 &-5761435109492267913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6346094974739613542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28bfdf21893a1b34c8744683d7f86bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerOffset: {x: 0, y: 2.5, z: 0}
+  carriableOffset: {x: 0, y: 0.5, z: 0}
+  cashAmount: 50
 --- !u!1 &6758686859888443208
 GameObject:
   m_ObjectHideFlags: 0
