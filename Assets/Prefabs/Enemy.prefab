@@ -1678,8 +1678,6 @@ MonoBehaviour:
   regularCollider: {fileID: 0}
   animator: {fileID: 3105380883868983623}
   hipsRigidbody: {fileID: 2204397365312717345}
-  playerOffset: {x: 0, y: 2.5, z: 0}
-  objectOffset: {x: 0, y: 0.5, z: 0}
   timeBeforeSlowdown: 0
   slowDownSeconds: 0.2
   slowDownAmount: 0.1
@@ -1698,8 +1696,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28bfdf21893a1b34c8744683d7f86bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOffset: {x: 0, y: 2.5, z: 0}
+  playerOffset: {x: 0, y: 2, z: 0}
   carriableOffset: {x: 0, y: 0.5, z: 0}
+  moveSpeed: 10
+  rotateSpeed: 35
   cashAmount: 50
 --- !u!1 &6758686859888443208
 GameObject:

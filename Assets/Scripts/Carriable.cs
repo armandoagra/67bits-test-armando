@@ -8,9 +8,21 @@ public class Carriable : MonoBehaviour
     [SerializeField] private Vector3 playerOffset, carriableOffset;
     private Vector3 offset;
     private Transform parent;
-    private float moveSpeed = 5f;
-    private float rotateSpeed = 10f;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float rotateSpeed = 10f;
     [SerializeField] private int cashAmount = 50;
+
+    [SerializeField] private float moveDelay = 0.1f;
+    [SerializeField] private float rotateDelay = 0.1f;
+    [SerializeField] private float maxTiltAngle = 15f;
+    [SerializeField] private float maxBendDistance = 0.2f;
+    private Vector3 playerVelocity;
+    [SerializeField] private PlayerMovement playerMovement;
+
+    private void Start()
+    {
+        playerMovement = FindFirstObjectByType<PlayerMovement>();
+    }
 
     void Update()
     {
@@ -21,16 +33,32 @@ public class Carriable : MonoBehaviour
 
     private void Move()
     {
-        
-        transform.position = Vector3.Slerp(transform.position, parent.position + offset, moveSpeed * Time.deltaTime);
+        Vector3 targetPosition = parent.position + CalculateBend();
+        transform.position = Vector3.SmoothDamp(transform.position, targetPosition + offset, ref playerVelocity, moveDelay);
     }
 
     private void Rotate()
     {
-        transform.rotation = Quaternion.Slerp(transform.rotation, parent.rotation, rotateSpeed * Time.deltaTime);
+        Quaternion targetRotation = parent.rotation * Quaternion.Euler(CalculateTilt());
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateDelay);
     }
 
-    public void SetStackParent(Transform newParent) {
+    private Vector3 CalculateBend()
+    {
+        Vector3 playerVelocity = playerMovement.GetMovementVector();
+        Vector3 bend = playerVelocity.normalized * maxBendDistance;
+        return new Vector3(bend.x, 0, bend.z);
+    }
+
+    private Vector3 CalculateTilt()
+    {
+        Vector3 playerVelocity = playerMovement.GetMovementVector();
+        float tiltAngle = playerVelocity.magnitude / maxTiltAngle;
+        return new Vector3(tiltAngle, 0, -tiltAngle);
+    }
+
+    public void SetStackParent(Transform newParent)
+    {
         parent = newParent;
     }
 
@@ -61,7 +89,7 @@ public class Carriable : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         while (transform.position.y > 0f)
         {
-            transform.Translate(Vector3.down * Time.deltaTime * 3f, Space.World);
+            transform.Translate(Time.deltaTime * 3f * Vector3.down, Space.World);
             yield return null;
         }
         Destroy(gameObject);
