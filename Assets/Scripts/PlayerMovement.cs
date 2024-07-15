@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving = false;
     [SerializeField] private Animator animator;
     private int isMovingHash;
+    private Vector3 movementVector;
+    [SerializeField] private UIJoystick uiJoystick;
 
     private void Awake()
     {
@@ -27,23 +29,31 @@ public class PlayerMovement : MonoBehaviour
         if (Input.touchCount == 1 && isMoving == false)
         {
             isMoving = true;
-            startInputPosition = Input.GetTouch(0).position;
+            //startInputPosition = Input.GetTouch(0).position;
         }
         if (isMoving)
         {
             Vector2 currentInputPosition = Input.GetTouch(0).position;
-            Vector3 movementVector = new Vector3(currentInputPosition.x - startInputPosition.x, 0f, currentInputPosition.y - startInputPosition.y).normalized;
+            Vector3 movementVector = new Vector3(uiJoystick.GetInputVector().x, 0, uiJoystick.GetInputVector().y).normalized;
+            //movementVector = new Vector3(currentInputPosition.x - startInputPosition.x, 0f, currentInputPosition.y - startInputPosition.y).normalized;
             if (movementVector.magnitude > 0.1f)
             {
                 transform.forward = movementVector;
                 animator.SetBool(isMovingHash, true);
             }
-            movementVector.y = -1f; // stay grounded
-            characterController.Move(speed * Time.deltaTime * movementVector);
-        } else
-        {
-            Vector3 stayGroundedVector = new Vector3(0f, -1f, 0f);
-            characterController.Move(speed * Time.deltaTime * stayGroundedVector);
+            Vector3 groundedMovementVector = movementVector;
+            groundedMovementVector.y = -1f;
+            characterController.Move(speed * Time.deltaTime * groundedMovementVector);
         }
+        else
+        {
+            Vector3 groundMovementVector = new Vector3(0f, -1f, 0f);
+            characterController.Move(speed * Time.deltaTime * groundMovementVector);
+        }
+    }
+
+    public Vector3 GetMovementVector()
+    {
+        return movementVector;
     }
 }
